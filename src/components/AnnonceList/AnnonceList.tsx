@@ -77,6 +77,9 @@ const AnnonceList = (props: Props) => {
     const onAddAnnonceClick = () => {
         setShownPage("add an annonce")
     }
+    const onEditAnnonceClick = () => {
+        setShownPage("edit an annonce")
+    }
 
     useEffect(() => {
         getAnnonces();
@@ -86,6 +89,7 @@ const AnnonceList = (props: Props) => {
 
         <div className="container-list-annonces">
             <input type="button" value="create annonce" onClick={onAddAnnonceClick}/>
+            <input type="button" value="edit annonce" onClick={onEditAnnonceClick}/>
 
             {/*<input type="button" value="create annonce"/>*/}
             <h2 className="title-list-of-annonces">List of annonces</h2>

@@ -39,7 +39,7 @@ const Annonce  = (props:{annonce:IIAnnonce,index:number}) => {
               <p className="annonce-info"><span className="annonce-info-title">Number of pieces: </span> {props.annonce.nbPiece.toString()}</p>
               <div className="buttons">
                   <input type="button" value="view"/>
-                  <input type="button" value="edit" onClick={() => {editAnnonce(props.annonce._id)}}/>
+                  {/*<a  value="edit" onClick={() => {}}/>*/}
               </div>
           </Card>
 

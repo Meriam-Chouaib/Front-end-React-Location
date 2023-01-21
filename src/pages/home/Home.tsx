@@ -14,6 +14,9 @@ export const Home = () => {
     const createAnnonce = (data: IIAnnonce) =>{
         setAnnonces([...annonces, data]);
     }
+    const editAnnonce = (data: IIAnnonce) =>{
+        setAnnonces([...annonces, data]);
+    }
     const shownListPage = () => {
         setShownPage("List annonces")
     }
@@ -34,6 +37,7 @@ export const Home = () => {
 
 
                 {showPage === "add an annonce" && <AnnonceForm onBackBtnClickHnd={shownListPage} onSubmitAnnonce={createAnnonce}/>}
+                {showPage === "edit an annonce" && <AnnonceForm onBackBtnClickHnd={shownListPage} onSubmitAnnonce={editAnnonce}/>}
 
             </div>
         </>

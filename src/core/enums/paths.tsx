@@ -11,4 +11,8 @@ export const PATHS = {
     LOGIN: '/login',
     REGISTER: '/register',
     PROFILE: '/profile',
+    ANNONCE :{
+        EDIT:'',
+        CREATE:''
+    }
 }
