@@ -1,0 +1,9 @@
+.container-form{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .annonce-form{
+    display: flex;
+    flex-direction: column;
+  }
+}

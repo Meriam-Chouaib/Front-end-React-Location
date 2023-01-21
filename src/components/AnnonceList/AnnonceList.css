@@ -1,0 +1,27 @@
+.container-list-annonces .title-list-of-annonces {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+.container-list-annonces .list-annonces {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.container-list-annonces .list-annonces .annonce {
+  flex: 0 0 33.3333%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+.container-list-annonces .list-annonces .annonce .btn-delete {
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-weight: bold;
+}
+
+/*# sourceMappingURL=AnnonceList.css.map */

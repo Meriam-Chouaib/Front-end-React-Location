@@ -1,0 +1,11 @@
+.container-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.container-form .annonce-form {
+  display: flex;
+  flex-direction: column;
+}
+
+/*# sourceMappingURL=EditAnnonceForm.css.map */
