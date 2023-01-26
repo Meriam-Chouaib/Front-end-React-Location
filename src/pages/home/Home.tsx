@@ -5,41 +5,77 @@ import AnnonceList from "../../components/AnnonceList/AnnonceList";
 import AnnonceForm from "../../components/annonceForm/AnnonceForm";
 import axios from "axios/index";
 import {toast} from "react-toastify";
+import Footer from "../../components/footer/Footer";
+import Header from "../../components/header/Header";
+import {PlusCircleOutlined} from "@ant-design/icons";
 
-export const Home = () => {
 
-    const [annonces, setAnnonces] = useState([] as IIAnnonce [])
+export const Home:React.FC = () => {
+
+    const [annonces, setAnnonces] = useState<IIAnnonce[]>(  [] )
     const [showPage, setShownPage] = useState("list");
+    const [isEdit, setIsEdit] = useState<boolean>(false);
 
-    const createAnnonce = (data: IIAnnonce) =>{
+    const createAnnonce = (data: IIAnnonce ) =>{
         setAnnonces([...annonces, data]);
     }
     const editAnnonce = (data: IIAnnonce) =>{
         setAnnonces([...annonces, data]);
     }
-    const shownListPage = () => {
-        setShownPage("List annonces")
+    const backToList = () => {
+        window.location.replace("/")
     }
     const onAddAnnonceClick = () => {
         setShownPage("add an annonce")
     }
+    const isEditPage=(val:boolean)=>{
+        setIsEdit(val)
+    }
 
     return (
         <>
-            <h2>Crud Annonce</h2>
+            <Header />
+        <div className={"container"}>
+
+
             <div className="list-annonces">
+
                 {showPage === "list" && (
                     <>
-                        <input type="button" value="create annonce" onClick={onAddAnnonceClick}/>
+                        <div className="btn-add-div">
+                            <PlusCircleOutlined  type="button" value="create annonce" onClick={onAddAnnonceClick} className={"icon-add"}/>
+                        </div>
+
+                        {/*<input type="button" value="create annonce" onClick={onAddAnnonceClick}/>*/}
+
                         <AnnonceList list={annonces}/>
+
+
                     </>
+
                 )}
 
 
-                {showPage === "add an annonce" && <AnnonceForm onBackBtnClickHnd={shownListPage} onSubmitAnnonce={createAnnonce}/>}
-                {showPage === "edit an annonce" && <AnnonceForm onBackBtnClickHnd={shownListPage} onSubmitAnnonce={editAnnonce}/>}
+
+                {/*{showPage === "edit an annonce" && <AnnonceForm onBackBtnClickHnd={shownListPage} onSubmitAnnonce={editAnnonce}/>}*/}
+
 
             </div>
+
+            {showPage === "add an annonce" &&
+                <>
+                    <AnnonceForm onBackBtnClickHnd={backToList} onSubmitAnnonce={createAnnonce} isEdit={false} />
+                </>
+
+            }
+            {showPage === "edit an annonce" &&
+                <>
+                    <AnnonceForm onBackBtnClickHnd={backToList} onSubmitAnnonce={createAnnonce} isEdit={true}/>
+                </>
+            }
+<Footer />
+        </div>
         </>
+
     )
 }

@@ -75,20 +75,24 @@ export const STRINGS = {
     SIGNIN: {
         TITLE: 'SIGN IN',
         EMAIL: 'Email',
+        USERNAME:"Username",
         PASSWORD: 'Password',
         FORGOT: 'Forgot your password ?',
         BTNCREATE: 'CREATE ACCOUNT',
-        BTNCONNECT: 'CONNECT',
+        BTNCONNECT: 'Connect',
         CONNECTWITH: 'Or connect with',
+        CANCEL:"Cancel"
     },
     SIGNUP: {
         TITLE: 'SIGN UP',
         NAME: 'Name',
+        USERNAME: 'Username',
         EMAIL: 'Email',
         PASSWORD: 'Password',
         CONFIRM: 'Confirm password ',
-        BTNREGISTER: 'REGISTER',
-        BTNSIGNIN: 'SIGN IN',
+        BTNREGISTER: 'Register',
+        CANCEL: 'Cancel',
+        ACCEPT:'Accepting the conditions is mandatory'
     },
     CONVERSATION: {
         TITLE: 'CONVERSATIONS',

@@ -1,47 +1,28 @@
 import React, {useEffect, useState} from "react";
-
 import './AnnonceList.scss';
-
 import Annonce from "../annonce/Annonce";
 import axios from "axios";
 import {toast} from "react-toastify";
 import loadingImage from "../../assets/loader.gif";
-
-import {IAnnonce, IIAnnonce} from "../../interfaces/Annonce";
-
-type Props = {
-    list: IIAnnonce [];
-};
+import {IAnnonce, IAnnonceListProps, IIAnnonce} from "../../interfaces/Annonce";
 
 
-const AnnonceList = (props: Props) => {
-    const {list} = props;
+const AnnonceList: React.FC<IAnnonceListProps> = ({list}) => {
+
     const [showPage, setShownPage] = useState("list");
 
     const onBackBtnClickHnd = () => {
         setShownPage("add an annonce")
     }
-    const [formData, setFormData] = useState({
-        "_id": "222222222222",
-        "region": "Wardanin",
-        "description": "Descriptiooonn",
-        "nbPiece": 2,
-        "price": 500,
-        "pictures": "dkdkdkkdkd.jpg"
-    })
-    const initialData: IIAnnonce[] = [
-        {
-            "_id": "222222222222",
-            "region": "Wardanin",
-            "description": "Descriptiooonn",
-            "nbPiece": 2,
-            "price": 500,
-            "pictures": "dkdkdkkdkd.jpg"
-        }
-    ]
-    const isEdit:Boolean = false;
 
-    const [annonces, setAnnonces] = useState(initialData);
+    const [annonces, setAnnonces] = useState<IIAnnonce[]>([{
+        _id: "",
+        region: "",
+        description: "",
+        nbPiece: 0,
+        price: 0,
+        pictures: ""
+    }]);
     const [isLoading, setIsLoading] = useState(false);
 
     const getAnnonces = async () => {
@@ -64,9 +45,10 @@ const AnnonceList = (props: Props) => {
             console.log(e)
         }
     }
-    const getSingleAnnonce = async (id:String) => {
+
+    const getSingleAnnonce = async (id: String) => {
         try {
-           const annonce = await axios.get(`http://localhost:5000/api/annonces/${id}`);
+            const annonce = await axios.get(`http://localhost:5000/api/annonces/${id}`);
             console.log(annonce)
             getAnnonces();
 
@@ -77,60 +59,71 @@ const AnnonceList = (props: Props) => {
     const onAddAnnonceClick = () => {
         setShownPage("add an annonce")
     }
-    const onEditAnnonceClick = () => {
-        setShownPage("edit an annonce")
+    const handleUpdate = async (data: IAnnonce, id: string) => {
+        try {
+            await axios.patch(`http://localhost:5000/api/annonces/${id}`, data);
+
+        } catch (e) {
+            console.log(e)
+        }
+
+    }
+    const handleRemove = async (annonce: IAnnonce, id: string) => {
+        try {
+            await axios.delete(`http://localhost:5000/api/annonces/${id}`);
+            getAnnonces();
+        } catch (e) {
+            console.log(e)
+        }
+    }
+    const handleCreate = async (annonce: IAnnonce) => {
+        try {
+            await axios.post(
+                `http://localhost:5000/api/annonces/create`,
+                annonce,
+            )
+            console.log("annonce added successfully!")
+            console.log(annonce)
+            //onSubmitAnnonce(data)
+        } catch (e) {
+            console.log(e)
+        }
     }
 
+    //tekhdem awel metlansi composant
     useEffect(() => {
         getAnnonces();
     }, [])
 
+    let annonceToAdd: IIAnnonce;
     return (
+        <>
+            <div className="container-list-annonces">
 
-        <div className="container-list-annonces">
-            <input type="button" value="create annonce" onClick={onAddAnnonceClick}/>
-            <input type="button" value="edit annonce" onClick={onEditAnnonceClick}/>
-
-            {/*<input type="button" value="create annonce"/>*/}
-            <h2 className="title-list-of-annonces">List of annonces</h2>
-            {/*{ showPage === "add an annonce" && <AnnonceForm onBackBtnClickHnd={onBackBtnClickHnd}  />}*/}
-
-            {
-                isLoading && (
-                    <div className="loading --flex-center">
-                        <img src={loadingImage} alt="Loadind"/>
-                    </div>
-                )}
-            <div className="list-annonces">
-
-
-                {!isLoading && annonces.length === 0 ? (
-                    <p>No annonce found!</p>
-                ) : (
-
-
-                    annonces.map((annonce, index) => {
-                        // console.log(annonce._id)
-
-                        return (
-                            <div className="annonce">
-                                <button className="btn-delete" onClick={() => deleteAnnonce(annonce._id)}>×</button>
-                                <input type="button" value="edit" onClick={()=> getSingleAnnonce(annonce._id) }/>
-
-                                <Annonce key={annonce._id} annonce={annonce} index={index}/>
-
-
-                            </div>
-
-
-                        )
-                    })
-
-                )}
+                {/*<h2 className="title-list-of-annonces">List of annonces</h2>*/}
+                {
+                    isLoading && (
+                        <div className="loading --flex-center">
+                            <img src={loadingImage} alt="Loadind"/>
+                        </div>
+                    )}
+                <div className="list-annonces">
+                    {!isLoading && annonces.length === 0 ? (
+                        <p>No annonce found!</p>
+                    ) : (
+                        annonces.map((annonce, index) => {
+                            // console.log(annonce._id)
+                            return (
+                                <div className="annonce">
+                                    <Annonce annonce={annonce} annonceIndex={index} onUpdate={handleUpdate}
+                                             onRemove={handleRemove}/>
+                                </div>
+                            )
+                        })
+                    )}
+                </div>
             </div>
-
-        </div>
-
+        </>
     )
 }
 

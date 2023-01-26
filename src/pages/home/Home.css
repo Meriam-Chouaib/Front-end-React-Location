@@ -1,3 +1,12 @@
-
+.container .list-annonces {
+  padding: 20px 27px;
+}
+.container .list-annonces .btn-add-div .icon-add {
+  display: flex;
+  justify-content: center;
+}
+.container .list-annonces .btn-add-div .icon-add svg {
+  font-size: 25px;
+}
 
 /*# sourceMappingURL=Home.css.map */

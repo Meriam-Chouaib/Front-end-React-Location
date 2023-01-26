@@ -1,12 +1,21 @@
-.annonce{
+.annonce {
 
-.annonce-info{
-  font-size: 14px;
-  annonce-info-title{
-font-weight: bold;
+  .annonce-info {
+    font-size: 14px;
+
+    annonce-info-title {
+      font-weight: bold;
+    }
   }
-}
-  .buttons{
 
+  .buttons {
+    DISPLAY: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    .edit-btn {
+      text-decoration: none;
+      color: black;
+    }
   }
 }

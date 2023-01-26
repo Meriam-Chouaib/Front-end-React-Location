@@ -4,5 +4,14 @@
 .annonce .annonce-info annonce-info-title {
   font-weight: bold;
 }
+.annonce .buttons {
+  DISPLAY: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.annonce .buttons .edit-btn {
+  text-decoration: none;
+  color: black;
+}
 
 /*# sourceMappingURL=Annonce.css.map */

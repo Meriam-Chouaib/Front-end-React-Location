@@ -1,18 +1,16 @@
 export const PATHS = {
     HOME: '/',
     ABOUT: '/about',
-    RESUME: '/resume',
-    WORKS: '/works',
-    CONTACT: '/contact',
+
 
     SIGNIN: '/signin',
-    PRODUCT: '/product/:id',
-    CART: '/cart/:id?',
+    ANNONCE:{
+        EDIT:'/annonce/:id',
+        CREATE:'annonces/create'
+    } ,
+
     LOGIN: '/login',
     REGISTER: '/register',
     PROFILE: '/profile',
-    ANNONCE :{
-        EDIT:'',
-        CREATE:''
-    }
+
 }

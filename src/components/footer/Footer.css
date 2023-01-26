@@ -1,0 +1,11 @@
+.footer {
+  background-color: black;
+  padding: 20px 20px;
+}
+.footer .item {
+  color: wheat;
+  padding: 0 5px;
+  text-decoration: none;
+}
+
+/*# sourceMappingURL=Footer.css.map */

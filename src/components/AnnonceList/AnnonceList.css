@@ -1,6 +1,6 @@
 .container-list-annonces .title-list-of-annonces {
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   display: flex;
 }
 .container-list-annonces .list-annonces {

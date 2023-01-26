@@ -1,97 +1,119 @@
-import React, {useState} from "react";
+import React, {ChangeEvent, useEffect, useState} from "react";
 import './AnnonceForm.scss'
-import {IAnnonce, IIAnnonce} from "../../interfaces/Annonce";
+import {IAnnonce, IAnnonceFormProps, IIAnnonce} from "../../interfaces/Annonce";
 import axios from "axios";
-
-type Props = {
-    onBackBtnClickHnd : () => void;
-    onSubmitAnnonce: (data: IIAnnonce ) => void;
-};
-
-
-const AnnonceForm = (props:Props) => {
-    const {onBackBtnClickHnd,onSubmitAnnonce} = props
+import {createRoutesFromChildren, useLocation, useNavigate, useParams} from "react-router-dom";
+import Input from "../input/Input";
+import editAnnonceForm from "../editAnnonceForm/EditAnnonceForm";
+import {PATHS} from "../../core/enums/paths";
 
 
-    const [region, setRegion] = useState("");
+const AnnonceForm: React.FC<IAnnonceFormProps> = ({onBackBtnClickHnd, onSubmitAnnonce, isEdit}) => {
+    const [initalState, setInitalState] = useState<IAnnonce>({
+        region: "",
+        description: "",
+        nbPiece: 0,
+        price: 0,
+        pictures: ""
+    })
+    const [annonce, setAnnonce] = useState<IAnnonce>(initalState);
+    let {id} = useParams();
 
-    const [description, setDescription] = useState("");
+    const getAnnonceById = async (id: string| undefined ) => {
+        try {
+            const annonceBy = await axios.get(
+                `http://localhost:5000/api/annonces/${id}`,
+            )
+            setAnnonce(annonceBy.data)
 
-    const [nbPiece, setNbPiece] = useState(0);
-    const [price, setPrice] = useState(0);
-    const [pictures, setPictures] = useState("");
-
-
-    const onSubmitbtnAnnonce = async (e:any) => {
-        e.preventDefault()
-       const data: IIAnnonce
-           = {
-            _id:"aaaaaaaaaaaa",
-           region:region,
-           description:description,
-           nbPiece: nbPiece,
-           price:price,
-           pictures:pictures
-       }
-
-       try{
-           await axios.post(
-               `http://localhost:5000/api/annonces/create`,
-               data,
-           )
-           console.log("annonce added successfully!")
-           console.log(data)
-           onSubmitAnnonce(data)
-       }catch (e) {
-           console.log(e)
-       }
-
-
-
+        } catch (e) {
+            console.log(e)
+        }
     }
-    const editAnnonce = async(id:String,data:IAnnonce) =>{
+
+    useEffect(() => {
+        getAnnonceById(id);
+    }, [])
+
+    const onSubmitbtnAnnonce = async (e: any) => {
+        e.preventDefault()
+        const data: IAnnonce
+            = {
+            region: annonce.region,
+            description: annonce.description,
+            nbPiece: annonce.nbPiece,
+            price: annonce.price,
+            pictures: annonce.pictures
+        }
+        try {
+            await axios.post(
+                `http://localhost:5000/api/annonces/create`,
+                data,
+            )
+            backToList()
+            console.log("annonce added successfully!")
+            console.log(data)
+
+            //onSubmitAnnonce(data)
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+
+    const handleUpdate = async(e:any,data:IAnnonce,id:string|undefined) =>{
+        e.preventDefault()
         try{
             await axios.patch(`http://localhost:5000/api/annonces/${id}`,data);
 
         }catch (e) {
             console.log(e)
         }
+        backToList()
     }
+    const navigate = useNavigate();
+    const handleChange = (e: any): void => {
+        setAnnonce((prevState) => ({
+            ...prevState,
+            [e.target.name]: e.target.value,
+        }));
+    }
+    const backToList = () => {
+ window.location.replace("/")
 
+    }
     return (
         <div className="container-form">
+            {isEdit && <h1>Edit an Annonce </h1>}
+            {!isEdit && <h1>Create an Annonce </h1>}
             <form className="annonce-form" onSubmit={onSubmitbtnAnnonce}>
 
+                <Input name={"region"} onChange={(e) => handleChange(e)}
+                       placeholder={"region"} type={"text"}
+                       value={annonce.region}/>
 
-                <input type="text" placeholder="region" name="region"
-                       value={region} onChange={(e) => setRegion(e.target.value)}
-                       required
-                />
-                <input type="text" placeholder="description" name="description"
-                       value={description}
-                       onChange={(e) => setDescription(e.target.value)}
-                />
-                <input type="text" placeholder="nbPiece" name="nbPiece"
-                       value={nbPiece}
-                       onChange={(e) => setNbPiece(parseInt(e.target.value))}
-                />
-                <input type="text" placeholder="price" name="price"
-                       value={price} onChange={(e) => setPrice(parseInt(e.target.value))}
-                />
-                <input type="file" placeholder="pictures" name="pictures"
-                       value={pictures} onChange={(e) => setPictures(e.target.value)}
-                />
-                <button type="submit">Add Annonce</button>
+                <Input name={"description"} onChange={(e) => handleChange(e)} placeholder={"description"} type={"text"}
+                       value={annonce.description}/>
+                <Input name={"nbPiece"} onChange={(e) => handleChange(e)} placeholder={"Number of rooms"} type={"text"}
+                       value={annonce.nbPiece}/>
 
-                <button type="submit" onClick={onBackBtnClickHnd}>back</button>
+                <Input name={"price"}
+                       onChange={(e) => handleChange(e)} placeholder={"price"} type={"text"} value={annonce.price}/>
+                <Input name={"pictures"} onChange={(e) => handleChange(e)} placeholder={"pictures"} type={"text"}
+                       value={annonce.pictures}/>
 
-                {/*<button onClick={()=>editAnnonce(_id,data)}>edit</button>*/}
+                {!isEdit && <button type="submit" onClick={onSubmitbtnAnnonce}>Add Annonce</button>}
+
+                { isEdit && id!=undefined  && <button type="submit" onClick={(e)=>handleUpdate(e,annonce,id)}>Edit Annonce</button>}
+
+                <button type="submit" onClick={backToList}>back to list</button>
+
+
 
             </form>
         </div>
-
-
     );
 };
 
 export default AnnonceForm
+

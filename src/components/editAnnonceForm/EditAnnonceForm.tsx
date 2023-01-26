@@ -1,87 +1,45 @@
-import React, {useState} from "react";
-import './AnnonceForm.scss'
-import {IAnnonce, IIAnnonce} from "../../interfaces/Annonce";
+import React, {ChangeEvent, useState} from "react";
+import './EditAnnonceForm.scss'
+import {IAnnonce, IEditAnnonceProps, IIAnnonce} from "../../interfaces/Annonce";
 import axios from "axios";
-
-type Props = {
-    onBackBtnClickHnd : () => void;
-    onSubmitAnnonce: (data: IIAnnonce ) => void;
-};
+import Input from "../input/Input";
 
 
-const EditAnnonceForm = (props:Props) => {
-    const {onBackBtnClickHnd,onSubmitAnnonce} = props
+const EditAnnonceForm :React.FC<IEditAnnonceProps> = ({onBackBtnClickHnd,onSubmitAnnonce,annonce}) => {
+
+    const [annonceEdit,setAnnonceEdit] = useState<IAnnonce>({region:annonce.region,description:annonce.description,nbPiece:annonce.nbPiece,price:annonce.price,pictures:annonce.pictures});
 
 
-    const [region, setRegion] = useState("");
-
-    const [description, setDescription] = useState("");
-
-    const [nbPiece, setNbPiece] = useState(0);
-    const [price, setPrice] = useState(0);
-    const [pictures, setPictures] = useState("");
-
-
-    const onSubmitbtnAnnonce = async (e:any) => {
-        e.preventDefault()
-       const data: IIAnnonce
-           = {
-            _id:"aaaaaaaaaaaa",
-           region:region,
-           description:description,
-           nbPiece: nbPiece,
-           price:price,
-           pictures:pictures
-       }
-
-       try{
-           await axios.post(
-               `http://localhost:5000/api/annonces/create`,
-               data,
-           )
-           console.log("annonce added successfully!")
-           console.log(data)
-           onSubmitAnnonce(data)
-       }catch (e) {
-           console.log(e)
-       }
-
-
-
-    }
-    const editAnnonce = async(id:String,data:IAnnonce) =>{
+    const onSubmiAnnonce = async(data:IIAnnonce,id:string) =>{
         try{
             await axios.patch(`http://localhost:5000/api/annonces/${id}`,data);
+            console.log(`annonce updated${id}`)
 
         }catch (e) {
             console.log(e)
         }
+        console.log("i'am here!",data)
+
     }
+    const handleChange =(e:ChangeEvent<HTMLInputElement>,attributName:any) :void =>{
+        setAnnonceEdit((prevState)=>({
+            ...prevState,
+            attributName: e.target.value
+        }))
+    }
+let e:any;
 
     return (
         <div className="container-form">
-            <form className="annonce-form" onSubmit={onSubmitbtnAnnonce}>
+            <form className="annonce-form" >
 
+<Input value={annonce.region} onChange={(e)=>{handleChange(e,"region")}} type={"text"} placeholder={"region"} name={"region"} />
+<Input value={annonce.description} onChange={(e)=>{handleChange(e,"description")}} type={"text"} placeholder={"description"} name={"description"} />
+<Input value={annonce.nbPiece} onChange={(e)=>{handleChange(e,"nbPiece")}} type={"text"} placeholder={"nbPiece"} name={"nbPiece"} />
+<Input value={annonce.price} onChange={(e)=>{handleChange(e,"price")}} type={"text"} placeholder={"price"} name={"price"} />
+<Input value={annonce.pictures} onChange={(e)=>{handleChange(e,"pictures")}} type={"text"} placeholder={"pictures"} name={"pictures"} />
 
-                <input type="text" placeholder="region" name="region"
-                       value={region} onChange={(e) => setRegion(e.target.value)}
-                       required
-                />
-                <input type="text" placeholder="description" name="description"
-                       value={description}
-                       onChange={(e) => setDescription(e.target.value)}
-                />
-                <input type="text" placeholder="nbPiece" name="nbPiece"
-                       value={nbPiece}
-                       onChange={(e) => setNbPiece(parseInt(e.target.value))}
-                />
-                <input type="text" placeholder="price" name="price"
-                       value={price} onChange={(e) => setPrice(parseInt(e.target.value))}
-                />
-                <input type="file" placeholder="pictures" name="pictures"
-                       value={pictures} onChange={(e) => setPictures(e.target.value)}
-                />
-                <button type="submit">Add Annonce</button>
+                <button type="submit" onClick={()=>onSubmiAnnonce(annonce,annonce._id)}>Edit Annonce</button>
 
                 <button type="submit" onClick={onBackBtnClickHnd}>back</button>
 
@@ -95,3 +53,4 @@ const EditAnnonceForm = (props:Props) => {
 };
 
 export default EditAnnonceForm
+
