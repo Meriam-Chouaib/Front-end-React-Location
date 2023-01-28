@@ -1,16 +1,12 @@
 import React from "react";
 import './RegisterForm.scss'
-import Input from "../input/Input";
-import {useEffect, useState} from "react";
-import {User, UserloginProps} from "../../interfaces/User";
+import { useState} from "react";
+import {User} from "../../interfaces/User";
 import axios from "axios";
 import {Formik, Field, Form, ErrorMessage} from 'formik';
-import * as Yup from 'yup';
 import AuthService from "../../services/auth.service";
 import {useNavigate} from "react-router-dom";
 import {validationSchema} from "../validationInputs/ValidateFormLogin";
-import {Simulate} from "react-dom/test-utils";
-import change = Simulate.change;
 import {STRINGS} from "../../core/enums/strings";
 
 const RegisterForm: React.FC = () => {
@@ -49,7 +45,7 @@ const RegisterForm: React.FC = () => {
             const res = await axios.post(`http://localhost:5000/api/auth/signup`,
                 user,
             )
-            console.log(res.data);
+            console.log("the result :"+res.data);
 
 
         } catch (e) {

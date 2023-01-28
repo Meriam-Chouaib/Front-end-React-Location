@@ -35,7 +35,7 @@ const LoginPage: React.FC = () => {
             username: user.username,
             password: user.password
         }
-        console.log("data" + data)
+      await  console.log("data" + data)
 
         try {
             // AuthService.login(data.username,data.password).then((res) => {

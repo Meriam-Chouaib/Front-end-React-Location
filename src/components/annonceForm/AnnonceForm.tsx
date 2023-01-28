@@ -6,6 +6,7 @@ import {createRoutesFromChildren, useLocation, useNavigate, useParams} from "rea
 import Input from "../input/Input";
 import editAnnonceForm from "../editAnnonceForm/EditAnnonceForm";
 import {PATHS} from "../../core/enums/paths";
+import FilesUploadComponent from "../files-upload-component/FilesUploadComponent";
 
 
 const AnnonceForm: React.FC<IAnnonceFormProps> = ({onBackBtnClickHnd, onSubmitAnnonce, isEdit}) => {
@@ -111,6 +112,7 @@ const AnnonceForm: React.FC<IAnnonceFormProps> = ({onBackBtnClickHnd, onSubmitAn
 
 
             </form>
+            <FilesUploadComponent />
         </div>
     );
 };
