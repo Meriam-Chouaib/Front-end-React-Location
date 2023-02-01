@@ -4,7 +4,7 @@ export interface IAnnonce {
     description: string,
     nbPiece:  Number,
     price:  Number,
-    pictures:  string
+    pictures:  any[]
 
 }
 
@@ -17,7 +17,7 @@ export interface IIAnnonce {
     description: string,
     nbPiece:  Number,
     price:  Number,
-    pictures:  string
+    pictures:  any[]
 }
 
 export interface Iannonces{
@@ -29,7 +29,8 @@ export interface IAnnonceProps {
     annonce:IIAnnonce,
     annonceIndex: number,
     onUpdate(annonce: IAnnonce, id: string): void,
-    onRemove(annonce: IAnnonce, id: string): void
+    onRemove(annonce: IAnnonce, id: string): void,
+    onGetAnnonce(id:string):void
 }
 export interface IEditAnnonceProps {
     onBackBtnClickHnd: () => void,

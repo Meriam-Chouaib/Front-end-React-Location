@@ -7,3 +7,9 @@ export interface InputProps{
     name?:string,
     onChange?:ChangeEventHandler<HTMLInputElement>
 }
+
+export interface Picture{
+    type?:string,
+    name?:string,
+    uid?:string
+}

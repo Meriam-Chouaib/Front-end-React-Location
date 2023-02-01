@@ -6,7 +6,8 @@ export const PATHS = {
     SIGNIN: '/signin',
     ANNONCE:{
         EDIT:'/annonce/:id',
-        CREATE:'annonces/create'
+        CREATE:'annonces/create',
+        GET:'/annonce/getAnnonce/:id'
     } ,
 
     LOGIN: '/login',

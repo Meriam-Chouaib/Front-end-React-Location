@@ -11,6 +11,8 @@ import LoginForm from "./pages/loginPage/LoginPage";
 import RegisterForm from "./components/registerForm/RegisterForm";
 // import Footer from "../../components/footer/Footer";
 import Header from "./components/header/Header";
+import AnnoncePage from "./pages/annoncePage/AnnoncePage";
+import annonce from "./components/annonce/Annonce";
 //import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
@@ -27,6 +29,8 @@ function App() {
                   /****Annonce***/
                   <Route path={PATHS.ANNONCE.EDIT} element={<AnnonceForm isEdit={true}/>}/>
                   <Route path={PATHS.ANNONCE.CREATE} element={<AnnonceForm isEdit={false}/>}/>
+                  <Route path={PATHS.ANNONCE.GET} element={<AnnoncePage  />}/>
+
 
 
 

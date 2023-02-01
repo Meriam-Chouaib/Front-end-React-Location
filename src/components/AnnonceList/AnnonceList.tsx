@@ -21,7 +21,7 @@ const AnnonceList: React.FC<IAnnonceListProps> = ({list}) => {
         description: "",
         nbPiece: 0,
         price: 0,
-        pictures: ""
+        pictures: []
     }]);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -37,28 +37,19 @@ const AnnonceList: React.FC<IAnnonceListProps> = ({list}) => {
             setIsLoading(false);
         }
     }
-    const deleteAnnonce = async (id: String) => {
-        try {
-            await axios.delete(`http://localhost:5000/api/annonces/${id}`);
-            getAnnonces();
-        } catch (e) {
-            console.log(e)
-        }
-    }
+
 
     const getSingleAnnonce = async (id: String) => {
         try {
             const annonce = await axios.get(`http://localhost:5000/api/annonces/${id}`);
             console.log(annonce)
-            getAnnonces();
+
 
         } catch (e) {
             console.log(e)
         }
     }
-    const onAddAnnonceClick = () => {
-        setShownPage("add an annonce")
-    }
+
     const handleUpdate = async (data: IAnnonce, id: string) => {
         try {
             await axios.patch(`http://localhost:5000/api/annonces/${id}`, data);
@@ -76,21 +67,8 @@ const AnnonceList: React.FC<IAnnonceListProps> = ({list}) => {
             console.log(e)
         }
     }
-    const handleCreate = async (annonce: IAnnonce) => {
-        try {
-            await axios.post(
-                `http://localhost:5000/api/annonces/create`,
-                annonce,
-            )
-            console.log("annonce added successfully!")
-            console.log(annonce)
-            //onSubmitAnnonce(data)
-        } catch (e) {
-            console.log(e)
-        }
-    }
 
-    //tekhdem awel metlansi composant
+    //first thing running is useEffect
     useEffect(() => {
         getAnnonces();
     }, [])
@@ -116,7 +94,7 @@ const AnnonceList: React.FC<IAnnonceListProps> = ({list}) => {
                             return (
                                 <div className="annonce">
                                     <Annonce annonce={annonce} annonceIndex={index} onUpdate={handleUpdate}
-                                             onRemove={handleRemove}/>
+                                             onRemove={handleRemove} onGetAnnonce={getSingleAnnonce}/>
                                 </div>
                             )
                         })

@@ -4,23 +4,38 @@ import {IAnnonce, IAnnonceFormProps, IIAnnonce} from "../../interfaces/Annonce";
 import axios from "axios";
 import {createRoutesFromChildren, useLocation, useNavigate, useParams} from "react-router-dom";
 import Input from "../input/Input";
-import editAnnonceForm from "../editAnnonceForm/EditAnnonceForm";
-import {PATHS} from "../../core/enums/paths";
-import FilesUploadComponent from "../files-upload-component/FilesUploadComponent";
+import UploadFile from "../input/UploadFile";
 
 
 const AnnonceForm: React.FC<IAnnonceFormProps> = ({onBackBtnClickHnd, onSubmitAnnonce, isEdit}) => {
+
     const [initalState, setInitalState] = useState<IAnnonce>({
         region: "",
         description: "",
         nbPiece: 0,
         price: 0,
-        pictures: ""
+        pictures: []
     })
     const [annonce, setAnnonce] = useState<IAnnonce>(initalState);
+    const [pictures, setPictures] = useState<string[]>([])
+
+    /***************************************Create list of images ************************************/
+
+    const createListPictures = async (ListPic: []) => {
+        await setPictures(ListPic)
+
+        console.log("pictures from the form", pictures)
+
+        setAnnonce((prevState) => ({
+            ...prevState,
+            pictures: pictures,
+        }));
+    }
+    /*************************************** get single Annonce ************************************/
+
     let {id} = useParams();
 
-    const getAnnonceById = async (id: string| undefined ) => {
+    const getAnnonceById = async (id: string | undefined) => {
         try {
             const annonceBy = await axios.get(
                 `http://localhost:5000/api/annonces/${id}`,
@@ -36,8 +51,11 @@ const AnnonceForm: React.FC<IAnnonceFormProps> = ({onBackBtnClickHnd, onSubmitAn
         getAnnonceById(id);
     }, [])
 
+    /*************************************** Create Annonce ************************************/
+
     const onSubmitbtnAnnonce = async (e: any) => {
         e.preventDefault()
+
         const data: IAnnonce
             = {
             region: annonce.region,
@@ -46,6 +64,8 @@ const AnnonceForm: React.FC<IAnnonceFormProps> = ({onBackBtnClickHnd, onSubmitAn
             price: annonce.price,
             pictures: annonce.pictures
         }
+
+        console.log(data)
         try {
             await axios.post(
                 `http://localhost:5000/api/annonces/create`,
@@ -62,25 +82,31 @@ const AnnonceForm: React.FC<IAnnonceFormProps> = ({onBackBtnClickHnd, onSubmitAn
     }
 
 
-    const handleUpdate = async(e:any,data:IAnnonce,id:string|undefined) =>{
-        e.preventDefault()
-        try{
-            await axios.patch(`http://localhost:5000/api/annonces/${id}`,data);
+    /*************************************** update Annonce ************************************/
 
-        }catch (e) {
+    const handleUpdate = async (e: any, data: IAnnonce, id: string | undefined) => {
+        e.preventDefault()
+        try {
+            await axios.patch(`http://localhost:5000/api/annonces/${id}`, data);
+
+        } catch (e) {
             console.log(e)
         }
         backToList()
     }
-    const navigate = useNavigate();
+
     const handleChange = (e: any): void => {
         setAnnonce((prevState) => ({
             ...prevState,
             [e.target.name]: e.target.value,
         }));
+
     }
+
+    /*************************************** redirect to home page ************************************/
+
     const backToList = () => {
- window.location.replace("/")
+        window.location.replace("/")
 
     }
     return (
@@ -100,19 +126,21 @@ const AnnonceForm: React.FC<IAnnonceFormProps> = ({onBackBtnClickHnd, onSubmitAn
 
                 <Input name={"price"}
                        onChange={(e) => handleChange(e)} placeholder={"price"} type={"text"} value={annonce.price}/>
-                <Input name={"pictures"} onChange={(e) => handleChange(e)} placeholder={"pictures"} type={"text"}
-                       value={annonce.pictures}/>
+
+                <UploadFile name={"pictures"} createListPictures={createListPictures}/>
+                {/*<Input name={"pictures"} onChange={(e) => handleChange(e)} placeholder={"pictures"} type={"text"}*/}
+                {/*       value={annonce.pictures}/>*/}
 
                 {!isEdit && <button type="submit" onClick={onSubmitbtnAnnonce}>Add Annonce</button>}
 
-                { isEdit && id!=undefined  && <button type="submit" onClick={(e)=>handleUpdate(e,annonce,id)}>Edit Annonce</button>}
+                {isEdit && id != undefined &&
+                    <button type="submit" onClick={(e) => handleUpdate(e, annonce, id)}>Edit Annonce</button>}
 
                 <button type="submit" onClick={backToList}>back to list</button>
 
 
-
             </form>
-            <FilesUploadComponent />
+
         </div>
     );
 };
