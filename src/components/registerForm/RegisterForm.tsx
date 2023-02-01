@@ -1,24 +1,22 @@
 import React from "react";
 import './RegisterForm.scss'
-import { useState} from "react";
+import {useState} from "react";
 import {User} from "../../interfaces/User";
 import axios from "axios";
 import {Formik, Field, Form, ErrorMessage} from 'formik';
-import AuthService from "../../services/auth.service";
-import {useNavigate} from "react-router-dom";
 import {validationSchema} from "../validationInputs/ValidateFormLogin";
 import {STRINGS} from "../../core/enums/strings";
 
 const RegisterForm: React.FC = () => {
-    const navigate = useNavigate();
+
     const [initalState, setInitalState] = useState<User>({
         username: "",
         email: "",
         password: "",
-
         role: ["user"]
     })
     const [user, setUser] = useState<User>(initalState);
+
     const handleChange = (e: any): void => {
         setUser((prevState) => ({
                 ...prevState,
@@ -26,35 +24,23 @@ const RegisterForm: React.FC = () => {
             })
         );
 
-
     }
+
+    /************************************************* signup user **********************************************/
     const onSubmitHandler = async (e: any) => {
         e.preventDefault()
         console.log("from submiting", user)
-        // const data: User = {
-        //     username: user.username,
-        //     email:user.email,
-        //     password: user.password,
-        //
-        //     role:user.role
-        // }
-        // console.log("data is : " + data + "user is :"+user)
 
         try {
-
             const res = await axios.post(`http://localhost:5000/api/auth/signup`,
                 user,
             )
-            console.log("the result :"+res.data);
-
-
+            console.log("the result :" + res.data);
         } catch (e) {
             console.log(e)
         }
-
-
-
     }
+
     return (
         <>
             <div className="container">
@@ -162,30 +148,27 @@ const RegisterForm: React.FC = () => {
                                             />
                                         </div>
                                     </div>
-                                        <div className="form-group d-flex justify-content-end gap-3">
-                                            <button
-                                                type="submit"
-                                                className="btn btn-primary disabled "
-                                                onClick={onSubmitHandler}
-                                                id={"signup-btn"}
+                                    <div className="form-group d-flex justify-content-end gap-3">
+                                        <button
+                                            type="submit"
+                                            className="btn btn-primary disabled "
+                                            onClick={onSubmitHandler}
+                                            id={"signup-btn"}
 
-                                            >
-                                                {STRINGS.SIGNUP.BTNREGISTER}
-                                            </button>
-                                            <button
-                                                type="button"
-                                                onClick={() => resetForm}
-                                                className="btn btn-danger"
-                                            >
-                                                {STRINGS.SIGNUP.CANCEL}
-                                            </button>
-                                        </div>
+                                        >
+                                            {STRINGS.SIGNUP.BTNREGISTER}
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => resetForm}
+                                            className="btn btn-danger"
+                                        >
+                                            {STRINGS.SIGNUP.CANCEL}
+                                        </button>
+                                    </div>
 
                                 </Form>
-
                             )}
-
-
                         </Formik>
                     </div>
                 </div>

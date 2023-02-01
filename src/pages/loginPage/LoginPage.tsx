@@ -18,15 +18,9 @@ const LoginPage: React.FC = () => {
         message: ""
     })
     const [user, setUser] = useState<UserloginProps>(initalState);
-    const handleChange = (e: any): void => {
-        setUser((prevState) => ({
-            ...prevState,
-            [e.target.name]: e.target.value,
-        }));
-
-    }
 
 
+    /****************************************************** Login user *****************************************************/
     const onSubmitLoginUser = async (e: any) => {
         e.preventDefault()
         console.log("i'm gonna work now!")
@@ -53,22 +47,8 @@ const LoginPage: React.FC = () => {
         } catch (e) {
             console.log(e)
         }
-
-
-    }
-    const connect = (e: any) => {
-        e.preventDefault()
-        console.log("i'm gonna work now!")
     }
 
-    const resetForm = () => {
-        setInitalState({
-            username: "",
-            password: "",
-            loading: true,
-            message: ""
-        })
-    }
     return (
         <>
             <Header/>

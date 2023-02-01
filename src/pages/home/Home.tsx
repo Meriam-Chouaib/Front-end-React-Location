@@ -54,11 +54,7 @@ export const Home:React.FC = () => {
                     </>
 
                 )}
-
-
-
                 {/*{showPage === "edit an annonce" && <AnnonceForm onBackBtnClickHnd={shownListPage} onSubmitAnnonce={editAnnonce}/>}*/}
-
 
             </div>
 

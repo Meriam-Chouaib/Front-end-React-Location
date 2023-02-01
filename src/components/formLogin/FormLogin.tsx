@@ -1,17 +1,14 @@
-import React, {useEffect, useState} from "react";
+import React, { useState} from "react";
 import {IPropsFomLogin, UserloginProps} from "../../interfaces/User";
-import axios from "axios";
 import {Formik, Field, Form, ErrorMessage} from 'formik';
-import * as Yup from 'yup';
-import AuthService from "../../services/auth.service";
 import {useNavigate} from "react-router-dom";
 import {validationSchema} from "../validationInputs/ValidateFormLogin";
 import {STRINGS} from "../../core/enums/strings";
 
 
 const FormLogin: React.FC<IPropsFomLogin> = ({onSubmitLoginUser}) => {
-    const [isLogged, setIsLogged] = useState(false);
 
+    const [isLogged, setIsLogged] = useState(false);
     const navigate = useNavigate();
     const [initalState, setInitalState] = useState<UserloginProps>({
         username: "",
@@ -19,13 +16,13 @@ const FormLogin: React.FC<IPropsFomLogin> = ({onSubmitLoginUser}) => {
         loading: true,
         message: ""
     })
+
     const [user, setUser] = useState<UserloginProps>(initalState);
     const handleChange = (e: any): void => {
         setUser((prevState) => ({
             ...prevState,
             [e.target.name]: e.target.value,
         }));
-
     }
 
     const resetForm = () => {
@@ -41,7 +38,6 @@ const FormLogin: React.FC<IPropsFomLogin> = ({onSubmitLoginUser}) => {
             <div className="container">
                 <div className="row">
                     <div className="col-md-6 offset-md-3 pt-3">
-
 
                         <Formik initialValues={initalState} onSubmit={onSubmitLoginUser}
                                 validationSchema={validationSchema}>
@@ -108,9 +104,7 @@ const FormLogin: React.FC<IPropsFomLogin> = ({onSubmitLoginUser}) => {
                                         </button>
                                     </div>
                                 </Form>
-
                             )}
-
 
                         </Formik>
                     </div>

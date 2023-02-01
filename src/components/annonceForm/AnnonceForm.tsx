@@ -128,8 +128,6 @@ const AnnonceForm: React.FC<IAnnonceFormProps> = ({onBackBtnClickHnd, onSubmitAn
                        onChange={(e) => handleChange(e)} placeholder={"price"} type={"text"} value={annonce.price}/>
 
                 <UploadFile name={"pictures"} createListPictures={createListPictures}/>
-                {/*<Input name={"pictures"} onChange={(e) => handleChange(e)} placeholder={"pictures"} type={"text"}*/}
-                {/*       value={annonce.pictures}/>*/}
 
                 {!isEdit && <button type="submit" onClick={onSubmitbtnAnnonce}>Add Annonce</button>}
 

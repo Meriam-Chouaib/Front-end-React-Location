@@ -3,6 +3,8 @@ import axios from "axios";
 const API_URL = "http://localhost:8080/api/auth/";
 
 class AuthService {
+
+    /*********************************************************Login user**********************************************************/
     login(username:string, password:string) {
         return axios
             .post(API_URL + "signin", {
@@ -18,10 +20,12 @@ class AuthService {
             });
     }
 
+    /*********************************************************Logout user**********************************************************/
     logout() {
         localStorage.removeItem("user");
     }
 
+    /*********************************************************register user**********************************************************/
     register(username:string, email:string, password:string) {
         return axios.post(API_URL + "signup", {
             username,
@@ -30,8 +34,8 @@ class AuthService {
         });
     }
 
+    /*********************************************************get user connected**********************************************************/
     getCurrentUser() {
-
         return JSON.parse(localStorage.getItem("user") || '{}');;
     }
 }

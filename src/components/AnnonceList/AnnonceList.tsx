@@ -9,12 +9,8 @@ import {IAnnonce, IAnnonceListProps, IIAnnonce} from "../../interfaces/Annonce";
 
 const AnnonceList: React.FC<IAnnonceListProps> = ({list}) => {
 
+    const [isLoading, setIsLoading] = useState(false);
     const [showPage, setShownPage] = useState("list");
-
-    const onBackBtnClickHnd = () => {
-        setShownPage("add an annonce")
-    }
-
     const [annonces, setAnnonces] = useState<IIAnnonce[]>([{
         _id: "",
         region: "",
@@ -23,7 +19,14 @@ const AnnonceList: React.FC<IAnnonceListProps> = ({list}) => {
         price: 0,
         pictures: []
     }]);
-    const [isLoading, setIsLoading] = useState(false);
+
+
+
+    const onBackBtnClickHnd = () => {
+        setShownPage("add an annonce")
+    }
+
+    /*************************************** get all annonces ************************************/
 
     const getAnnonces = async () => {
         setIsLoading(true);
@@ -38,18 +41,18 @@ const AnnonceList: React.FC<IAnnonceListProps> = ({list}) => {
         }
     }
 
+    /*************************************** get single annonce ************************************/
 
     const getSingleAnnonce = async (id: String) => {
         try {
             const annonce = await axios.get(`http://localhost:5000/api/annonces/${id}`);
             console.log(annonce)
-
-
         } catch (e) {
             console.log(e)
         }
     }
 
+    /*************************************** update annonce ************************************/
     const handleUpdate = async (data: IAnnonce, id: string) => {
         try {
             await axios.patch(`http://localhost:5000/api/annonces/${id}`, data);
@@ -57,8 +60,9 @@ const AnnonceList: React.FC<IAnnonceListProps> = ({list}) => {
         } catch (e) {
             console.log(e)
         }
-
     }
+
+    /*************************************** delete annonce ************************************/
     const handleRemove = async (annonce: IAnnonce, id: string) => {
         try {
             await axios.delete(`http://localhost:5000/api/annonces/${id}`);
@@ -68,17 +72,13 @@ const AnnonceList: React.FC<IAnnonceListProps> = ({list}) => {
         }
     }
 
-    //first thing running is useEffect
     useEffect(() => {
         getAnnonces();
     }, [])
 
-    let annonceToAdd: IIAnnonce;
     return (
         <>
             <div className="container-list-annonces">
-
-                {/*<h2 className="title-list-of-annonces">List of annonces</h2>*/}
                 {
                     isLoading && (
                         <div className="loading --flex-center">
@@ -104,5 +104,4 @@ const AnnonceList: React.FC<IAnnonceListProps> = ({list}) => {
         </>
     )
 }
-
 export default AnnonceList
